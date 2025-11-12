@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Início | LabMaker</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #fafafa; margin: 0; padding: 2rem; }
+    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    button { background: #007bff; color: white; border: none; padding: 10px 16px; border-radius: 5px; cursor: pointer; }
+    button:hover { background: #0056b3; }
+    table { border-collapse: collapse; width: 100%; background: white; border-radius: 8px; overflow: hidden; }
+    th, td { padding: 12px; border-bottom: 1px solid #ddd; text-align: left; }
+    th { background: #f0f0f0; }
+    tr:hover { background: #f9f9f9; }
+    .prioridade-0 { color: gray; }
+    .prioridade-1 { color: orange; }
+    .prioridade-2 { color: red; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Requisições de Impressão 3D</h1>
+    <button onclick="window.location.href='/nova-requisicao'">Nova Requisição</button>
+  </header>
+
+  <table id="tabela">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Usuário</th>
+        <th>Material</th>
+        <th>Filamento (g)</th>
+        <th>Tempo (min)</th>
+        <th>Preço</th>
+        <th>Status</th>
+        <th>Prioridade</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    async function carregarRequisicoes() {
+      try {
+        const res = await fetch("/requisicoes");
+        if (!res.ok) throw new Error("Erro ao buscar requisições");
+        const dados = await res.json();
+
+        const tbody = document.querySelector("#tabela tbody");
+        tbody.innerHTML = "";
+
+        dados.forEach(r => {
+          const tr = document.createElement("tr");
+          const prioridadeNome = ["Baixa", "Média", "Alta"][r.prioridade ?? 0];
+          tr.innerHTML = `
+            <td>${r.id}</td>
+            <td>${r.usuario.nome} (${r.usuario.tipo})</td>
+            <td>${r.tipoMaterial}</td>
+            <td>${r.qntdFilamento}</td>
+            <td>${r.tempoEstimado}</td>
+            <td>${r.precoEstimado?.toFixed(2) ?? '-'}</td>
+            <td>${r.status}</td>
+            <td class="prioridade-${r.prioridade}">${prioridadeNome}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (err) {
+        console.error(err);
+        alert("Erro ao carregar requisições!");
+      }
+    }
+
+    carregarRequisicoes();
+  </script>
+</body>
+</html>

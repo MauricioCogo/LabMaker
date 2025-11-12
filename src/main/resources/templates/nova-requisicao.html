@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Nova Impressão | LabMaker</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f4; display: flex; justify-content: center; align-items: center; height: 100vh; }
+    form { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); width: 400px; }
+    input, button { width: 100%; padding: 10px; margin-top: 10px; border-radius: 5px; border: 1px solid #ccc; }
+    button { background: #007bff; color: white; border: none; cursor: pointer; }
+    button:hover { background: #0056b3; }
+  </style>
+</head>
+<body>
+  <form id="reqForm">
+    <h2>Cadastrar Impressão</h2>
+    <input type="number" step="1" name="usuarioId" placeholder="ID do Usuário" required>
+    <input type="number" step="0.01" name="qntdFilamento" placeholder="Qtd. de Filamento (g)" required>
+    <input type="number" name="tempoEstimado" placeholder="Tempo Estimado (min)" required>
+    <input type="text" name="tipoMaterial" placeholder="Tipo de Material (ex: PLA, ABS)" required>
+    <button type="submit">Enviar</button>
+    <button type="button" onclick="window.location.href='/'">Voltar</button>
+  </form>
+
+  <script>
+    document.getElementById("reqForm").addEventListener("submit", async e => {
+      e.preventDefault();
+
+      const data = {
+        usuarioId: Number(e.target.usuarioId.value),
+        qntdFilamento: Number(e.target.qntdFilamento.value),
+        tempoEstimado: Number(e.target.tempoEstimado.value),
+        tipoMaterial: e.target.tipoMaterial.value
+      };
+
+      const res = await fetch("/requisicoes", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(data)
+      });
+
+      if (res.ok) {
+        alert("Requisição cadastrada com sucesso!");
+        window.location.href = "/";
+      } else {
+        alert("Erro ao cadastrar requisição.");
+      }
+    });
+  </script>
+</body>
+</html>

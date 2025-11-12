@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Cadastro | LabMaker</title>
+  <style>
+    body { font-family: sans-serif; background: #f4f4f4; display: flex; justify-content: center; align-items: center; height: 100vh; }
+    form { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); width: 300px; }
+    input, select, button { width: 100%; padding: 10px; margin-top: 10px; border-radius: 5px; border: 1px solid #ccc; }
+    button { background: #28a745; color: white; border: none; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <form id="cadastroForm">
+    <h2>Cadastrar</h2>
+    <input name="nome" placeholder="Nome" required>
+    <input name="email" type="email" placeholder="E-mail" required>
+    <input name="senha" type="password" placeholder="Senha" required>
+    <select name="tipo">
+      <option value="ALUNO">Aluno</option>
+      <option value="ADMIN">Admin</option>
+    </select>
+    <button type="submit">Cadastrar</button>
+  </form>
+
+  <script>
+    document.getElementById("cadastroForm").addEventListener("submit", async e => {
+      e.preventDefault();
+      const data = {
+        nome: e.target.nome.value,
+        email: e.target.email.value,
+        senha: e.target.senha.value,
+        tipo: e.target.tipo.value
+      };
+
+      const res = await fetch("/usuarios", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(data)
+      });
+
+      if (res.ok) {
+        alert("Cadastro realizado! Agora faça login.");
+        window.location.href = "/login";
+      } else {
+        alert("Erro ao cadastrar. Tente novamente.");
+      }
+    });
+  </script>
+</body>
+</html>
