@@ -86,7 +86,6 @@
                     <td>${u.tipo}</td>
 
                     <td>
-                        <button class="btn-small blue" onclick="editar(${u.id})">Editar</button>
                         <button class="btn-small red" onclick="deletar(${u.id})">Excluir</button>
                     </td>
                 `;
@@ -102,10 +101,6 @@
 
     carregarUsuarios();
 
-    // Temporário — faço o modal se tu quiser
-    function editar(id) {
-        alert("Tela/modal de edição ainda não criada.\nSe quiser eu faço agora.");
-    }
 
     async function deletar(id) {
         if (!confirm("Deseja deletar este usuário?")) return;

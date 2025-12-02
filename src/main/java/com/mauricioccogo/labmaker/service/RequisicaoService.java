@@ -27,8 +27,8 @@ public class RequisicaoService {
         return requisicaoRepository.findAll().stream().map(RequisicaoResponseDTO::toDTO).collect(Collectors.toList());
     }
 
-    public List<RequisicaoResponseDTO> listarTodasPorUsuario() {
-        return requisicaoRepository.findAll().stream().map(RequisicaoResponseDTO::toDTO).collect(Collectors.toList());
+    public List<RequisicaoResponseDTO> listarTodasPorUsuario(Long id) {
+        return requisicaoRepository.findByUsuarioId(id).stream().map(RequisicaoResponseDTO::toDTO).collect(Collectors.toList());
     }
 
     public RequisicaoResponseDTO salvar(RequisicaoCreateDTO dto) {
