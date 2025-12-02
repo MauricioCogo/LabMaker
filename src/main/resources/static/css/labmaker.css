@@ -329,3 +329,62 @@ font-weight: 500;
 .login-card p.small-link a:hover {
 text-decoration: underline;
 }
+
+/* ====== TABELA BONITA ====== */
+.pretty-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.pretty-table thead {
+    background: #1e293b;
+    color: white;
+}
+
+.pretty-table th,
+.pretty-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.pretty-table tbody tr:nth-child(even) {
+    background: #f6f7f9;
+}
+
+.pretty-table tbody tr:hover {
+    background: #e8eef9;
+}
+
+/* BADGES de status */
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+}
+
+.status-AGUARDANDO_APROVACAO { background: #ca8a04; }
+.status-PENDENTE            { background: #3b82f6; }
+.status-EM_IMPRESSAO        { background: #0ea5e9; }
+.status-CONCLUIDA           { background: #16a34a; }
+.status-CANCELADA           { background: #dc2626; }
+
+/* ===== HISTÓRICO ===== */
+.history-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.history-list li {
+    background: #f8fafc;
+    padding: 10px;
+    margin-bottom: 6px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 4px solid #1e293b;
+}

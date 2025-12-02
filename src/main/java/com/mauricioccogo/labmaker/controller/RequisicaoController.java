@@ -23,7 +23,8 @@ public class RequisicaoController {
 
     @GetMapping("/user/{id}")
     public List<RequisicaoResponseDTO> listarTodasPorUsuario(@PathVariable Long id) {
-        return service.listarTodasPorUsuario(id);
+        List<RequisicaoResponseDTO> rs = service.listarTodasPorUsuario(id);
+        return rs;
     }
 
     @PostMapping

@@ -19,6 +19,7 @@
         </div>
         <div class="right-actions">
             <a class="btn-ghost" href="home">Home</a>
+            <button id="logoutBtn" class="btn-ghost red">Sair</button>
         </div>
     </header>
 
@@ -31,12 +32,16 @@
 
                 <div class="card small">
                     <h3>Fila de Impressão</h3>
-                    <table>
+                    <table class="pretty-table">
                         <thead>
                             <tr>
                                 <th>Pos</th>
                                 <th>ID</th>
                                 <th>Descrição</th>
+                                <th>Filamento</th>
+                                <th>Tempo</th>
+                                <th>Preço</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody id="filaUsuario"></tbody>
@@ -46,8 +51,10 @@
                 <!-- HISTÓRICO -->
                 <div class="card small">
                     <h3>Histórico</h3>
-                    <ul id="historyList"></ul>
+                    <ul id="historyList" class="history-list"></ul>
                 </div>
+
+            </div>
 
             </div>
         </section>
@@ -58,6 +65,13 @@
     <script src="js/api.js"></script>
 
     <script>
+
+
+        document.getElementById("logoutBtn").addEventListener("click", () => {
+            utils.logout();
+            location.href = "login";
+        });
+
         async function initPerfil() {
             const params = new URLSearchParams(location.search);
             const userId = params.get("userId");
@@ -78,8 +92,15 @@
             document.getElementById("profileName").textContent = user.nome;
             document.getElementById("profileEmail").textContent = user.email;
 
-            // FILA
             const todas = await api.getFilaUsuario(user.id);
+
+            console.log(user.id);
+
+            console.log("TODAS:", todas);
+            console.log("TAMANHO:", todas.length);
+
+            console.log("TODAS STATUS:", todas.map(t => t.status));
+
 
             const fila = todas.filter(f =>
                 f.status === "AGUARDANDO_APROVACAO" ||
@@ -98,14 +119,24 @@
             <td>${i + 1}</td>
             <td>${f.id}</td>
             <td>${f.descricao}</td>
+            <td>${f.qntdFilamento ?? 'Não especificado'}</td>
+            <td>${f.tempoEstimado ?? 'Não especificado'}</td>
+            <td>${f.precoEstimado ?? 'Não especificado'}</td>
+            <td><span class="status-badge status-${f.status}">${f.status}</span></td>
         </tr>
     `).join("");
 
-            // HISTÓRICO
+
             document.getElementById("historyList").innerHTML =
                 hist.length === 0
                     ? "<li>Nenhum histórico.</li>"
-                    : hist.map(h => `<li>#${h.id} — ${h.descricao}</li>`).join("");
+                    : hist.map(h => `
+            <li>
+                <span>#${h.id} — ${h.descricao}</span>
+                <span class="status-badge status-${h.status}">${h.status}</span>
+            </li>
+        `).join("");
+
         }
 
         initPerfil();

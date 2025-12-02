@@ -2,7 +2,6 @@ const BASE_URL = "http://localhost:8080";
 
 const api = {
 
-    // ---------- USUÁRIOS ----------
     async login(payload) {
         const r = await fetch(`${BASE_URL}/usuarios/auth`, {
             method: "POST",
@@ -57,12 +56,18 @@ const api = {
     },
 
 
-    async getFilaUsuario(id) {
-        const rs = await fetch(`${BASE_URL}/requisicoes/user/${id}`, { method: "GET" });
-        console.log(rs);
-        
-        return rs.json();
-    },
+async getFilaUsuario(id) {
+    const rs = await fetch(`${BASE_URL}/requisicoes/user/${id}`);        
+    const text = await rs.text();
+    console.log("RAW:", text);
+
+    try {
+        return JSON.parse(text);
+    } catch (e) {
+        console.error("JSON inválido:", e);
+        return [];
+    }
+},
 
     async deletarRequisicao(id) {
         await fetch(`${BASE_URL}/requisicoes/${id}`, { method: "DELETE" });

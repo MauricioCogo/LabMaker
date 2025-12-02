@@ -55,7 +55,6 @@
 
 <script>
 
-    // Checar ADMIN
     const user = utils.getCurrentUser();
     if (!user) location.href = "login";
     if (user.tipo !== "ADMIN") {

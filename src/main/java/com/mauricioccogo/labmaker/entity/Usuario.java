@@ -1,5 +1,7 @@
 package com.mauricioccogo.labmaker.entity;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,6 +28,9 @@ public class Usuario {
     @Enumerated(EnumType.STRING)
     @Column
     private TipoUsuario tipo = TipoUsuario.ALUNO;
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Requisicao> requisicoes;
 
     public enum TipoUsuario {
         ALUNO, PROFESSOR, EXTERNO, ADMIN

@@ -49,6 +49,19 @@
     <script src="js/api.js"></script>
 
     <script>
+
+        const user = utils.getCurrentUser();
+        if (!user) location.href = "login";
+        if (user.tipo !== "ADMIN") {
+            alert("Acesso negado.");
+            location.href = "home";
+        }
+
+        document.getElementById("logoutBtn").addEventListener("click", () => {
+            utils.logout();
+            location.href = "login";
+        });
+
         async function carregar() {
             try {
                 const lista = await api.listarRequisicoes();
@@ -64,11 +77,10 @@
                     item.innerHTML = `
                 <div class="accordion-header" onclick="toggleAccordion(this)">
                     <div>
-                        <strong>#${r.id}</strong> — ${r.usuario.nome}
+                        <strong>#${r.id}</strong> — ${r.usuario.nome} 
                     </div>
                     <div>
-                        <span>${r.status}</span> •  
-                        <span>${r.prioridade}</span>
+                        <span>${r.status}</span>
                     </div>
                 </div>
 
@@ -84,28 +96,29 @@
                     <input type="text" id="material-${r.id}" value="${r.tipoMaterial ?? ''}">
 
                     <label><strong>Filamento (g):</strong></label>
-                    <input type="number" id="filamento-${r.id}" value="${r.quantidadeFilamento ?? ''}">
+                    <input type="number" id="filamento-${r.id}" value="${r.qntdFilamento ?? ''}">
 
                     <label><strong>Tempo Estimado (min):</strong></label>
                     <input type="number" id="tempo-${r.id}" value="${r.tempoEstimado ?? ''}">
 
                     <label><strong>Prioridade:</strong></label>
                     <select id="prioridade-${r.id}">
-                        <option ${r.prioridade === 'BAIXA' ? 'selected' : ''}>BAIXA</option>
-                        <option ${r.prioridade === 'MEDIA' ? 'selected' : ''}>MEDIA</option>
-                        <option ${r.prioridade === 'ALTA' ? 'selected' : ''}>ALTA</option>
+                        <option ${r.prioridade === 0 ? 'selected' : ''}>BAIXA</option>
+                        <option ${r.prioridade === 1 ? 'selected' : ''}>MEDIA</option>
+                        <option ${r.prioridade === 2 ? 'selected' : ''}>ALTA</option>
                     </select>
 
                     <label><strong>Status:</strong></label>
-                    <select id="status-${r.id}">
-                        <option ${r.status === 'PENDENTE' ? 'selected' : ''}>PENDENTE</option>
-                        <option ${r.status === 'EM_PROGRESSO' ? 'selected' : ''}>EM_PROGRESSO</option>
-                        <option ${r.status === 'FINALIZADO' ? 'selected' : ''}>FINALIZADO</option>
-                    </select>
-
+                        <select id="status-${r.id}">
+                            <option value="PENDENTE" ${r.status === 'PENDENTE' ? 'selected' : ''}>Pendente</option>
+                            <option value="EM_IMPRESSAO" ${r.status === 'EM_IMPRESSAO' ? 'selected' : ''}>Em impressão</option>
+                            <option value="CONCLUIDA" ${r.status === 'CONCLUIDA' ? 'selected' : ''}>Concluída</option>
+                            <option value="CANCELADA" ${r.status === 'CANCELADA' ? 'selected' : ''}>Cancelada</option>
+                            <option value="AGUARDANDO_APROVACAO" ${r.status === 'AGUARDANDO_APROVACAO' ? 'selected' : ''}>Aguardando aprovação</option>
+                        </select>
                     <br><br>
 
-                    <button class="btn-small blue" onclick="salvar(${r.id})">Salvar Alterações</button>
+<button class="btn-small blue" onclick="salvar(${r.id}, ${r.usuario.id})">Salvar Alterações</button>
                     <button class="btn-small red" onclick="deletar(${r.id})">Excluir</button>
                 </div>
             `;
@@ -126,17 +139,25 @@
         }
 
 
-        async function salvar(id) {
+        async function salvar(id, usuarioId) {
+
+            console.log(id + " " + usuarioId);
+
 
             const payload = {
-                descricao: document.getElementById(`descricao-${id}`).value,
+                usuarioId: usuarioId,
                 url: document.getElementById(`url-${id}`).value,
-                tipoMaterial: document.getElementById(`material-${id}`).value,
-                quantidadeFilamento: Number(document.getElementById(`filamento-${id}`).value),
+                descricao: document.getElementById(`descricao-${id}`).value,
+                qntdFilamento: Number(document.getElementById(`filamento-${id}`).value),
                 tempoEstimado: Number(document.getElementById(`tempo-${id}`).value),
-                prioridade: document.getElementById(`prioridade-${id}`).value,
-                status: document.getElementById(`status-${id}`).value
+                tipoMaterial: document.getElementById(`material-${id}`).value,
+                status: document.getElementById(`status-${id}`).value,
+                prioridade: Number(document.getElementById(`prioridade-${id}`).value),
+                posicao: 0
             };
+
+
+            console.log(document.getElementById(`status-${id}`).value);
 
             try {
                 await fetch(`http://localhost:8080/requisicoes/${id}`, {
