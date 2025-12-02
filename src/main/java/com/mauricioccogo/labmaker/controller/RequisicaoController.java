@@ -31,6 +31,13 @@ public class RequisicaoController {
         return service.salvar(requisicao);
     }
 
+    @PutMapping("/{id}")
+    public RequisicaoResponseDTO editar(
+            @PathVariable Long id,
+            @RequestBody RequisicaoCreateDTO requisicaoDTO) {
+        return service.editar(id, requisicaoDTO);
+    }
+
     @GetMapping("/{id}")
     public RequisicaoResponseDTO buscarPorId(@PathVariable Long id) {
         return service.buscarPorId(id);

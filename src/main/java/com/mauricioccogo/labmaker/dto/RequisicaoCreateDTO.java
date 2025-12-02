@@ -1,6 +1,7 @@
 package com.mauricioccogo.labmaker.dto;
 
 import com.mauricioccogo.labmaker.entity.Requisicao;
+import com.mauricioccogo.labmaker.entity.Requisicao.Status;
 
 public record RequisicaoCreateDTO (
     Long usuarioId,
@@ -8,7 +9,9 @@ public record RequisicaoCreateDTO (
     String descricao,
     Double qntdFilamento,
     Integer tempoEstimado,
-    String tipoMaterial
+    String tipoMaterial,
+    Status status,
+    int posicao
 ){
     public static Requisicao toEntity(RequisicaoCreateDTO dto){
         Requisicao r = new Requisicao();
@@ -17,6 +20,8 @@ public record RequisicaoCreateDTO (
         r.setQuantidadeFilamento(dto.qntdFilamento);
         r.setTempoEstimado(dto.tempoEstimado);
         r.setTipoMaterial(dto.tipoMaterial);
+        r.setStatus(dto.status);
+        r.setPosicao(dto.posicao);
         return r;
     }
 }

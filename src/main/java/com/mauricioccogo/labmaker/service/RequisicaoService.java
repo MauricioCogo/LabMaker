@@ -58,6 +58,30 @@ public class RequisicaoService {
         return RequisicaoResponseDTO.toDTO(savedr);
     }
 
+    public RequisicaoResponseDTO editar(Long id, RequisicaoCreateDTO dto) {
+        Requisicao requisicao = requisicaoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Requisição não encontrada"));
+
+        requisicao.setUrl(dto.url());
+        requisicao.setDescricao(dto.descricao());
+        requisicao.setQuantidadeFilamento(dto.qntdFilamento());
+        requisicao.setTempoEstimado(dto.tempoEstimado());
+        requisicao.setTipoMaterial(dto.tipoMaterial());
+        requisicao.setStatus(dto.status());
+        requisicao.setPosicao(dto.posicao());
+
+
+        double preco = calcularPrecoIntermediario(dto);
+        requisicao.setPrecoEstimado(preco);
+
+        Usuario u = UsuarioResponseDTO.toEntity(usuarioService.buscarPorId(dto.usuarioId()));
+        requisicao.setUsuario(u);
+
+        Requisicao saved = requisicaoRepository.save(requisicao);
+
+        return RequisicaoResponseDTO.toDTO(saved);
+    }
+
     public RequisicaoResponseDTO buscarPorId(Long id) {
         Requisicao r = requisicaoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Requisição não encontrada"));
@@ -68,29 +92,29 @@ public class RequisicaoService {
         requisicaoRepository.deleteById(id);
     }
 
-public static double calcularPrecoIntermediario(RequisicaoCreateDTO dto) {
-    // parâmetros fixos
-    double precoPorKg = 100.0;      // R$/kg
-    double precoKWh = 0.72;         // R$/kWh
-    double potenciaWatts = 150.0;   // W da impressora
-    double custoFixoPorHora = 10.0; // R$/h
+    public static double calcularPrecoIntermediario(RequisicaoCreateDTO dto) {
+        // parâmetros fixos
+        double precoPorKg = 100.0; // R$/kg
+        double precoKWh = 0.72; // R$/kWh
+        double potenciaWatts = 150.0; // W da impressora
+        double custoFixoPorHora = 10.0; // R$/h
 
-    // trata nulos
-    Integer tempoEstimado = dto.tempoEstimado() != null ? dto.tempoEstimado() : 0;
-    Double qntdFilamento = dto.qntdFilamento() != null ? dto.qntdFilamento() : 0.0;
+        // trata nulos
+        Integer tempoEstimado = dto.tempoEstimado() != null ? dto.tempoEstimado() : 0;
+        Double qntdFilamento = dto.qntdFilamento() != null ? dto.qntdFilamento() : 0.0;
 
-    // conversões
-    double horas = tempoEstimado / 60.0;
+        // conversões
+        double horas = tempoEstimado / 60.0;
 
-    // cálculos
-    double custoFilamento = (qntdFilamento / 1000.0) * precoPorKg;
-    double consumoKWh = horas * (potenciaWatts / 1000.0);
-    double custoEnergia = consumoKWh * precoKWh;
-    double custoFixoIntermediario = horas * (custoFixoPorHora / 2);
+        // cálculos
+        double custoFilamento = (qntdFilamento / 1000.0) * precoPorKg;
+        double consumoKWh = horas * (potenciaWatts / 1000.0);
+        double custoEnergia = consumoKWh * precoKWh;
+        double custoFixoIntermediario = horas * (custoFixoPorHora / 2);
 
-    // soma total
-    double precoSugerido = custoFilamento + custoEnergia + custoFixoIntermediario;
+        // soma total
+        double precoSugerido = custoFilamento + custoEnergia + custoFixoIntermediario;
 
-    return Math.round(precoSugerido * 100.0) / 100.0;
-}
+        return Math.round(precoSugerido * 100.0) / 100.0;
+    }
 }
