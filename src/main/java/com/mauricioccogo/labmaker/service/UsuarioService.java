@@ -1,12 +1,15 @@
 package com.mauricioccogo.labmaker.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
 import com.mauricioccogo.labmaker.dto.UsuarioCreateDTO;
+import com.mauricioccogo.labmaker.dto.UsuarioLoginDTO;
 import com.mauricioccogo.labmaker.dto.UsuarioResponseDTO;
 import com.mauricioccogo.labmaker.entity.Usuario;
 import com.mauricioccogo.labmaker.repository.UsuarioRepository;
-import org.springframework.stereotype.Service;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class UsuarioService {
@@ -27,7 +30,7 @@ public class UsuarioService {
         return UsuarioResponseDTO.toDto(savedU);
     }
 
-    public UsuarioResponseDTO logar(UsuarioCreateDTO usuario) {
+    public UsuarioResponseDTO logar(UsuarioLoginDTO usuario) {
         Usuario u = usuarioRepository.findByEmail(usuario.email());
         if (usuario.email().equals(u.getEmail()) && usuario.senha().equals(u.getSenha())) {
             return UsuarioResponseDTO.toDto(u);

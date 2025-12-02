@@ -6,12 +6,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class HomeController {
 
-    @GetMapping("/")
+    @GetMapping("/home")
     public String home() {
         return "index";
     }
 
-    @GetMapping("/nova-requisicao")
+    @GetMapping("/new")
     public String novaRequisicao() {
         return "nova-requisicao";
     }
@@ -24,5 +24,10 @@ public class HomeController {
     @GetMapping("/cadastro")
     public String cadastro() {
         return "cadastro";
+    }
+
+    @GetMapping("/perfil")
+    public String profile(){
+        return "perfil";
     }
 }

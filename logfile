@@ -1,0 +1,54 @@
+2025-12-02 14:20:30.563 -03 [10816] LOG:  iniciando PostgreSQL 17.5 on x86_64-windows, compiled by msvc-19.44.35209, 64-bit
+2025-12-02 14:20:30.568 -03 [10816] LOG:  escutando no endereço IPv6 "::1", porta 5432
+2025-12-02 14:20:30.569 -03 [10816] LOG:  escutando no endereço IPv4 "127.0.0.1", porta 5432
+2025-12-02 14:20:31.250 -03 [14348] LOG:  sistema de banco de dados foi interrompido; última execução em 2025-12-01 15:30:20 -03
+2025-12-02 14:20:41.312 -03 [14348] LOG:  syncing data directory (fsync), elapsed time: 10.01 s, current path: ./base/16388/3600_fsm
+2025-12-02 14:20:50.171 -03 [14348] LOG:  sistema de banco de dados não foi desligado corretamente; recuperação automática está em andamento
+2025-12-02 14:20:50.290 -03 [14348] LOG:  redo inicia em 0/2EC3E28
+2025-12-02 14:20:50.308 -03 [14348] LOG:  comprimento de registro inválido em 0/2EC3F30: esperado pelo menos 24, obtido 0
+2025-12-02 14:20:50.308 -03 [14348] LOG:  refazer feito em 0/2EC3EF8 uso do sistema: CPU: usuário: 0.00 s, sistema: 0.01 s, decorrido: 0.07 s
+2025-12-02 14:20:50.457 -03 [252] LOG:  checkpoint starting: end-of-recovery immediate wait
+2025-12-02 14:20:50.655 -03 [252] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.002 s, sync=0.037 s, total=0.287 s; sync files=2, longest=0.020 s, average=0.019 s; distance=0 kB, estimate=0 kB; lsn=0/2EC3F30, redo lsn=0/2EC3F30
+2025-12-02 14:20:50.748 -03 [10816] LOG:  sistema de banco de dados está pronto para aceitar conexões
+2025-12-02 14:25:50.671 -03 [252] LOG:  checkpoint starting: time
+2025-12-02 14:27:42.764 -03 [252] LOG:  checkpoint complete: wrote 983 buffers (6.0%); 0 WAL file(s) added, 0 removed, 1 recycled; write=107.377 s, sync=4.206 s, total=112.094 s; sync files=314, longest=0.059 s, average=0.014 s; distance=4623 kB, estimate=4623 kB; lsn=0/3347DB0, redo lsn=0/3347D20
+2025-12-02 14:30:50.791 -03 [252] LOG:  checkpoint starting: time
+2025-12-02 14:30:52.964 -03 [252] LOG:  checkpoint complete: wrote 15 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=1.665 s, sync=0.311 s, total=2.173 s; sync files=9, longest=0.050 s, average=0.035 s; distance=12 kB, estimate=4162 kB; lsn=0/334B068, redo lsn=0/334B010
+2025-12-02 14:40:50.955 -03 [252] LOG:  checkpoint starting: time
+2025-12-02 14:40:51.857 -03 [252] LOG:  checkpoint complete: wrote 5 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.439 s, sync=0.264 s, total=0.902 s; sync files=5, longest=0.110 s, average=0.053 s; distance=17 kB, estimate=3747 kB; lsn=0/334F4D8, redo lsn=0/334F448
+2025-12-02 15:40:51.546 -03 [252] LOG:  checkpoint starting: time
+2025-12-02 15:40:54.269 -03 [252] LOG:  checkpoint complete: wrote 8 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=1.380 s, sync=0.490 s, total=3.139 s; sync files=6, longest=0.119 s, average=0.082 s; distance=1 kB, estimate=3373 kB; lsn=0/334F8E0, redo lsn=0/334F850
+2025-12-02 15:41:53.560 -03 [7976] LOG:  não foi possível receber dados do cliente: unrecognized winsock error 10054
+2025-12-02 15:41:53.605 -03 [7932] LOG:  não foi possível receber dados do cliente: unrecognized winsock error 10054
+2025-12-02 15:41:53.605 -03 [19352] LOG:  não foi possível receber dados do cliente: unrecognized winsock error 10054
+2025-12-02 15:41:53.605 -03 [2052] LOG:  não foi possível receber dados do cliente: unrecognized winsock error 10054
+2025-12-02 15:41:53.606 -03 [10080] LOG:  não foi possível receber dados do cliente: unrecognized winsock error 10054
+2025-12-02 15:41:53.609 -03 [16904] LOG:  não foi possível receber dados do cliente: unrecognized winsock error 10054
+2025-12-02 15:41:53.609 -03 [6188] LOG:  não foi possível receber dados do cliente: unrecognized winsock error 10054
+2025-12-02 15:41:53.609 -03 [10440] LOG:  não foi possível receber dados do cliente: unrecognized winsock error 10054
+2025-12-02 15:41:53.611 -03 [4772] LOG:  não foi possível receber dados do cliente: unrecognized winsock error 10054
+2025-12-02 15:41:53.612 -03 [19104] LOG:  não foi possível receber dados do cliente: unrecognized winsock error 10054
+2025-12-02 15:43:21.631 -03 [7796] LOG:  não foi possível receber dados do cliente: unrecognized winsock error 10054
+2025-12-02 15:43:21.634 -03 [17576] LOG:  não foi possível receber dados do cliente: unrecognized winsock error 10054
+2025-12-02 15:43:21.634 -03 [6524] LOG:  não foi possível receber dados do cliente: unrecognized winsock error 10054
+2025-12-02 15:43:21.637 -03 [18916] LOG:  não foi possível receber dados do cliente: unrecognized winsock error 10054
+2025-12-02 15:43:21.638 -03 [14328] LOG:  não foi possível receber dados do cliente: unrecognized winsock error 10054
+2025-12-02 15:43:21.641 -03 [16744] LOG:  não foi possível receber dados do cliente: unrecognized winsock error 10054
+2025-12-02 15:43:21.643 -03 [12364] LOG:  não foi possível receber dados do cliente: unrecognized winsock error 10054
+2025-12-02 15:43:21.655 -03 [13220] LOG:  não foi possível receber dados do cliente: unrecognized winsock error 10054
+2025-12-02 15:43:21.671 -03 [15808] LOG:  não foi possível receber dados do cliente: unrecognized winsock error 10054
+2025-12-02 15:43:21.671 -03 [16600] LOG:  não foi possível receber dados do cliente: unrecognized winsock error 10054
+2025-12-02 15:46:38.455 -03 [13236] LOG:  não foi possível receber dados do cliente: unrecognized winsock error 10054
+2025-12-02 15:46:38.532 -03 [14960] LOG:  não foi possível receber dados do cliente: unrecognized winsock error 10054
+2025-12-02 15:46:38.533 -03 [19028] LOG:  não foi possível receber dados do cliente: unrecognized winsock error 10054
+2025-12-02 15:46:38.534 -03 [11548] LOG:  não foi possível receber dados do cliente: unrecognized winsock error 10054
+2025-12-02 15:46:38.535 -03 [3832] LOG:  não foi possível receber dados do cliente: unrecognized winsock error 10054
+2025-12-02 15:46:38.539 -03 [6716] LOG:  não foi possível receber dados do cliente: unrecognized winsock error 10054
+2025-12-02 15:46:38.540 -03 [12512] LOG:  não foi possível receber dados do cliente: unrecognized winsock error 10054
+2025-12-02 15:46:38.548 -03 [9964] LOG:  não foi possível receber dados do cliente: unrecognized winsock error 10054
+2025-12-02 15:46:38.583 -03 [10464] LOG:  não foi possível receber dados do cliente: unrecognized winsock error 10054
+2025-12-02 15:46:38.586 -03 [12100] LOG:  não foi possível receber dados do cliente: unrecognized winsock error 10054
+2025-12-02 16:10:51.313 -03 [252] LOG:  checkpoint starting: time
+2025-12-02 16:10:52.555 -03 [252] LOG:  checkpoint complete: wrote 11 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.931 s, sync=0.187 s, total=1.244 s; sync files=7, longest=0.057 s, average=0.027 s; distance=2 kB, estimate=3036 kB; lsn=0/3350448, redo lsn=0/33503F0
+2025-12-02 16:20:51.566 -03 [252] LOG:  checkpoint starting: time
+2025-12-02 16:20:52.167 -03 [252] LOG:  checkpoint complete: wrote 5 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.430 s, sync=0.089 s, total=0.602 s; sync files=5, longest=0.022 s, average=0.018 s; distance=1 kB, estimate=2732 kB; lsn=0/3350858, redo lsn=0/3350800

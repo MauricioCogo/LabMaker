@@ -1,51 +1,99 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+<!doctype html>
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Nova Impressão | LabMaker</title>
-  <style>
-    body { font-family: Arial, sans-serif; background: #f4f4f4; display: flex; justify-content: center; align-items: center; height: 100vh; }
-    form { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); width: 400px; }
-    input, button { width: 100%; padding: 10px; margin-top: 10px; border-radius: 5px; border: 1px solid #ccc; }
-    button { background: #007bff; color: white; border: none; cursor: pointer; }
-    button:hover { background: #0056b3; }
-  </style>
+    <meta charset="utf-8">
+    <title>Nova Requisição - LabMaker</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="css/labmaker.css">
 </head>
+
 <body>
-  <form id="reqForm">
-    <h2>Cadastrar Impressão</h2>
-    <input type="number" step="1" name="usuarioId" placeholder="ID do Usuário" required>
-    <input type="number" step="0.01" name="qntdFilamento" placeholder="Qtd. de Filamento (g)" required>
-    <input type="number" name="tempoEstimado" placeholder="Tempo Estimado (min)" required>
-    <input type="text" name="tipoMaterial" placeholder="Tipo de Material (ex: PLA, ABS)" required>
-    <button type="submit">Enviar</button>
-    <button type="button" onclick="window.location.href='/'">Voltar</button>
-  </form>
 
-  <script>
-    document.getElementById("reqForm").addEventListener("submit", async e => {
-      e.preventDefault();
+<header class="topbar">
+    <div class="brand-row">
+        <div class="logo-square">IF</div>
+        <div>
+            <h1>Nova Requisição</h1>
+            <p class="muted">Solicitar nova impressão 3D</p>
+        </div>
+    </div>
 
-      const data = {
-        usuarioId: Number(e.target.usuarioId.value),
-        qntdFilamento: Number(e.target.qntdFilamento.value),
-        tempoEstimado: Number(e.target.tempoEstimado.value),
-        tipoMaterial: e.target.tipoMaterial.value
-      };
+    <div class="right-actions">
+        <a href="home" class="btn-ghost">Voltar</a>
+        <button id="logoutBtn" class="btn-ghost red">Sair</button>
+    </div>
+</header>
 
-      const res = await fetch("/requisicoes", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(data)
-      });
+<main class="container">
 
-      if (res.ok) {
-        alert("Requisição cadastrada com sucesso!");
-        window.location.href = "/";
-      } else {
-        alert("Erro ao cadastrar requisição.");
-      }
+    <section class="card">
+        <h2>Criar nova requisição</h2>
+        <p class="muted">Preencha os dados abaixo</p>
+
+        <form id="reqForm">
+
+            <label>URL do Arquivo (obrigatório)</label>
+            <input type="text" id="url" required placeholder="https://… /modelo.stl">
+
+            <label>Descrição (obrigatório)</label>
+            <textarea id="descricao" rows="3" required placeholder="Breve descrição do projeto"></textarea>
+
+            <label>Quantidade de Filamento (g) (opcional)</label>
+            <input type="number" id="filamento" min="0" step="0.1">
+
+            <label>Tempo Estimado (minutos) (opcional)</label>
+            <input type="number" id="tempo" min="0">
+
+            <label>Tipo de Material (opcional)</label>
+            <input type="text" id="material" placeholder="PLA, ABS, PETG…">
+
+            <button type="submit" class="btn-primary">
+                Enviar Requisição
+            </button>
+        </form>
+    </section>
+
+</main>
+
+<script src="js/utils.js"></script>
+<script src="js/api.js"></script>
+
+<script>
+    // Checar login
+    const user = utils.getCurrentUser();
+    if (!user) {
+        location.href = "login";
+    }
+
+    // Logout
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+        utils.logout();
+        location.href = "login";
     });
-  </script>
+
+    // Envio da requisição
+    document.getElementById("reqForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const payload = {
+            usuarioId: user.id,
+            url: document.getElementById("url").value,
+            descricao: document.getElementById("descricao").value,
+            qntdFilamento: document.getElementById("filamento").value || null,
+            tempoEstimado: document.getElementById("tempo").value || null,
+            tipoMaterial: document.getElementById("material").value || null
+        };
+
+        try {
+            await api.novaRequisicao(payload);
+            alert("Requisição enviada com sucesso!");
+            location.href = "home";
+        } catch (err) {
+            console.error(err);
+            alert("Erro ao enviar requisição.");
+        }
+    });
+</script>
+
 </body>
 </html>

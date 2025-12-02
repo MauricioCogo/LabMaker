@@ -2,7 +2,6 @@ package com.mauricioccogo.labmaker.controller;
 
 import com.mauricioccogo.labmaker.dto.RequisicaoCreateDTO;
 import com.mauricioccogo.labmaker.dto.RequisicaoResponseDTO;
-import com.mauricioccogo.labmaker.entity.Requisicao;
 import com.mauricioccogo.labmaker.service.RequisicaoService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -20,6 +19,11 @@ public class RequisicaoController {
     @GetMapping
     public List<RequisicaoResponseDTO> listarTodas() {
         return service.listarTodas();
+    }
+
+    @GetMapping("/user/{id}")
+    public List<RequisicaoResponseDTO> listarTodasPorUsuario() {
+        return service.listarTodasPorUsuario();
     }
 
     @PostMapping

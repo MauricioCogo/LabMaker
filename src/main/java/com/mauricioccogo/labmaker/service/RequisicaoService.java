@@ -1,14 +1,16 @@
 package com.mauricioccogo.labmaker.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
 import com.mauricioccogo.labmaker.dto.RequisicaoCreateDTO;
 import com.mauricioccogo.labmaker.dto.RequisicaoResponseDTO;
 import com.mauricioccogo.labmaker.dto.UsuarioResponseDTO;
 import com.mauricioccogo.labmaker.entity.Requisicao;
 import com.mauricioccogo.labmaker.entity.Usuario;
 import com.mauricioccogo.labmaker.repository.RequisicaoRepository;
-import org.springframework.stereotype.Service;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class RequisicaoService {
@@ -22,6 +24,10 @@ public class RequisicaoService {
     }
 
     public List<RequisicaoResponseDTO> listarTodas() {
+        return requisicaoRepository.findAll().stream().map(RequisicaoResponseDTO::toDTO).collect(Collectors.toList());
+    }
+
+    public List<RequisicaoResponseDTO> listarTodasPorUsuario() {
         return requisicaoRepository.findAll().stream().map(RequisicaoResponseDTO::toDTO).collect(Collectors.toList());
     }
 
@@ -62,25 +68,29 @@ public class RequisicaoService {
         requisicaoRepository.deleteById(id);
     }
 
-    public static double calcularPrecoIntermediario(RequisicaoCreateDTO dto) {
-        // parâmetros fixos (podem vir do banco ou config)
-        double precoPorKg = 100.0; // R$/kg
-        double precoKWh = 0.72; // R$/kWh
-        double potenciaWatts = 150.0; // W da impressora
-        double custoFixoPorHora = 10.0; // R$/h (definido pela empresa)
+public static double calcularPrecoIntermediario(RequisicaoCreateDTO dto) {
+    // parâmetros fixos
+    double precoPorKg = 100.0;      // R$/kg
+    double precoKWh = 0.72;         // R$/kWh
+    double potenciaWatts = 150.0;   // W da impressora
+    double custoFixoPorHora = 10.0; // R$/h
 
-        // conversões
-        double horas = dto.tempoEstimado() / 60.0;
+    // trata nulos
+    Integer tempoEstimado = dto.tempoEstimado() != null ? dto.tempoEstimado() : 0;
+    Double qntdFilamento = dto.qntdFilamento() != null ? dto.qntdFilamento() : 0.0;
 
-        // cálculos
-        double custoFilamento = (dto.qntdFilamento() / 1000.0) * precoPorKg;
-        double consumoKWh = horas * (potenciaWatts / 1000.0);
-        double custoEnergia = consumoKWh * precoKWh;
-        double custoFixoIntermediario = horas * (custoFixoPorHora / 2);
+    // conversões
+    double horas = tempoEstimado / 60.0;
 
-        // soma total
-        double precoSugerido = custoFilamento + custoEnergia + custoFixoIntermediario;
+    // cálculos
+    double custoFilamento = (qntdFilamento / 1000.0) * precoPorKg;
+    double consumoKWh = horas * (potenciaWatts / 1000.0);
+    double custoEnergia = consumoKWh * precoKWh;
+    double custoFixoIntermediario = horas * (custoFixoPorHora / 2);
 
-        return Math.round(precoSugerido * 100.0) / 100.0;
-    }
+    // soma total
+    double precoSugerido = custoFilamento + custoEnergia + custoFixoIntermediario;
+
+    return Math.round(precoSugerido * 100.0) / 100.0;
+}
 }

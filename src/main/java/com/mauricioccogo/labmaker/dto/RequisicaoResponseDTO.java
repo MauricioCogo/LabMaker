@@ -7,13 +7,14 @@ import com.mauricioccogo.labmaker.entity.Requisicao.Status;
 
 public record RequisicaoResponseDTO(
         Long id,
+        String url,
+        String descricao,
         Double qntdFilamento,
         Integer tempoEstimado,
         Double precoEstimado,
         String tipoMaterial,
         Status status,
         LocalDateTime dataSolicitacao,
-        LocalDateTime dataPrevista,
         Integer prioridade,
         UsuarioResponseDTO usuario) {
 
@@ -22,13 +23,14 @@ public record RequisicaoResponseDTO(
 
         return new RequisicaoResponseDTO(
         r.getId(),
+        r.getUrl(),
+        r.getDescricao(),
         r.getQuantidadeFilamento(),
         r.getTempoEstimado(), 
         r.getPrecoEstimado(),
         r.getTipoMaterial(),
         r.getStatus(),
         r.getDataSolicitacao(),
-        r.getDataPrevista(),
         r.getPrioridade(),
         UsuarioResponseDTO.toDto(r.getUsuario()));
     }
@@ -39,13 +41,14 @@ public record RequisicaoResponseDTO(
         }
         Requisicao r = new Requisicao();
         r.setId(dto.id);
+        r.setUrl(dto.url);
+        r.setDescricao(dto.descricao);
         r.setQuantidadeFilamento(dto.qntdFilamento);
         r.setTempoEstimado(dto.tempoEstimado);
         r.setPrecoEstimado(dto.precoEstimado);
         r.setTipoMaterial(dto.tipoMaterial);
         r.setStatus(dto.status);
         r.setDataSolicitacao(dto.dataSolicitacao);
-        r.setDataPrevista(dto.dataPrevista);
         r.setPrioridade(dto.prioridade);
         r.setUsuario(UsuarioResponseDTO.toEntity(dto.usuario));
         return r;

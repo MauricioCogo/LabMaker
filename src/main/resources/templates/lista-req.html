@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8">
+    <title>Requisições - Admin | LabMaker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/labmaker.css">
+</head>
+
+<body>
+
+<header class="topbar">
+    <div class="brand-row">
+        <div class="logo-square">IF</div>
+        <div>
+            <h1>Requisições</h1>
+            <p class="muted">Gerenciamento geral – Administrador</p>
+        </div>
+    </div>
+
+    <div class="right-actions">
+        <a href="home" class="btn-ghost">Home</a>
+        <button id="logoutBtn" class="btn-ghost red">Sair</button>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="card">
+        <h2>Lista de Requisições</h2>
+        <p class="muted">Todas as solicitações feitas pelos usuários</p>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Usuário</th>
+                    <th>Descrição</th>
+                    <th>Status</th>
+                    <th>Prioridade</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+
+            <tbody id="tabela-req">
+                <!-- carregado via JS -->
+            </tbody>
+        </table>
+    </section>
+
+</main>
+
+<script src="js/utils.js"></script>
+<script src="js/api.js"></script>
+
+<script>
+
+    // Checar se é admin
+    const user = utils.getCurrentUser();
+    if (!user) {
+        location.href = "login";
+    }
+    if (user.tipo !== "ADMIN") {
+        alert("Acesso negado.");
+        location.href = "home";
+    }
+
+    // Logout
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+        utils.logout();
+        location.href = "login";
+    });
+
+    // Carregar requisições
+    async function carregar() {
+        try {
+            const lista = await api.listarRequisicoes();
+            const tbody = document.getElementById("tabela-req");
+
+            tbody.innerHTML = "";
+
+            lista.forEach(r => {
+                const tr = document.createElement("tr");
+
+                tr.innerHTML = `
+                    <td>${r.id}</td>
+                    <td>${r.usuario.nome}</td>
+                    <td>${r.descricao}</td>
+                    <td>${r.status}</td>
+                    <td>${r.prioridade}</td>
+
+                    <td>
+                        <button class="btn-small blue" onclick="editar(${r.id})">Editar</button>
+                        <button class="btn-small red" onclick="deletar(${r.id})">Excluir</button>
+                    </td>
+                `;
+
+                tbody.appendChild(tr);
+            });
+
+        } catch (err) {
+            console.error(err);
+            alert("Erro ao carregar requisições.");
+        }
+    }
+
+    carregar();
+
+    // Placeholder — posso te mandar os modais dps
+    function editar(id) {
+        alert("Tela/modal de edição ainda não criada.\nSe quiser eu faço agora.");
+    }
+
+    async function deletar(id) {
+        if (!confirm("Deseja realmente excluir esta requisição?")) return;
+
+        try {
+            await api.deletarRequisicao(id);
+            carregar();
+        } catch (err) {
+            alert("Erro ao deletar.");
+        }
+    }
+
+</script>
+
+</body>
+</html>

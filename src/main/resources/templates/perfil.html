@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8">
+    <title>Perfil - LabMaker</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="css/labmaker.css">
+</head>
+
+<body>
+    <header class="topbar">
+        <div class="brand-row">
+            <div class="logo-square">IF</div>
+            <div>
+                <h1>LabMaker</h1>
+                <p class="muted">Perfil do usuário</p>
+            </div>
+        </div>
+        <div class="right-actions">
+            <a class="btn-ghost" href="home">Home</a>
+        </div>
+    </header>
+
+    <main class="page container">
+        <section class="card">
+            <h2 id="profileName">Usuário</h2>
+            <p class="muted" id="profileEmail">email</p>
+
+            <div class="grid-3" style="gap:12px; margin-top:14px">
+
+                <div class="card small">
+                    <h3>Fila de Impressão</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Pos</th>
+                                <th>ID</th>
+                                <th>Descrição</th>
+                            </tr>
+                        </thead>
+                        <tbody id="filaUsuario"></tbody>
+                    </table>
+                </div>
+
+                <!-- HISTÓRICO -->
+                <div class="card small">
+                    <h3>Histórico</h3>
+                    <ul id="historyList"></ul>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+
+    <script>
+        async function initPerfil() {
+            const params = new URLSearchParams(location.search);
+            const userId = params.get("userId");
+
+            let user = null;
+            if (userId) {
+                user = await api.getUserById(userId);
+            } else {
+                user = utils.getCurrentUser();
+            }
+
+            if (!user) {
+                alert("Usuário não encontrado");
+                location.href = "home";
+                return;
+            }
+
+            document.getElementById("profileName").textContent = user.nome;
+            document.getElementById("profileEmail").textContent = user.email;
+
+            // FILA
+            const todas = await api.getFilaUsuario(user.id);
+
+            const fila = todas.filter(f =>
+                f.status === "AGUARDANDO_APROVACAO" ||
+                f.status === "PENDENTE" ||
+                f.status === "EM_IMPRESSAO"
+            );
+
+            const hist = todas.filter(h =>
+                h.status === "CONCLUIDA" ||
+                h.status === "CANCELADA"
+            );
+
+            document.getElementById("filaUsuario").innerHTML =
+                fila.map((f, i) => `
+        <tr>
+            <td>${i + 1}</td>
+            <td>${f.id}</td>
+            <td>${f.descricao}</td>
+        </tr>
+    `).join("");
+
+            // HISTÓRICO
+            document.getElementById("historyList").innerHTML =
+                hist.length === 0
+                    ? "<li>Nenhum histórico.</li>"
+                    : hist.map(h => `<li>#${h.id} — ${h.descricao}</li>`).join("");
+        }
+
+        initPerfil();
+    </script>
+
+</body>
+
+</html>

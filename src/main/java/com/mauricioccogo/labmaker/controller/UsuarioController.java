@@ -2,10 +2,13 @@ package com.mauricioccogo.labmaker.controller;
 
 import com.mauricioccogo.labmaker.dto.UsuarioCreateDTO;
 import com.mauricioccogo.labmaker.dto.UsuarioResponseDTO;
-import com.mauricioccogo.labmaker.entity.Usuario;
 import com.mauricioccogo.labmaker.service.UsuarioService;
+
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
+
+import com.mauricioccogo.labmaker.dto.UsuarioLoginDTO;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -28,7 +31,7 @@ public class UsuarioController {
     }
 
     @PostMapping("/auth")
-    public UsuarioResponseDTO logar(@RequestBody UsuarioCreateDTO usuario) {
+    public UsuarioResponseDTO logar(@RequestBody UsuarioLoginDTO usuario) {
         return service.logar(usuario);
     }
 

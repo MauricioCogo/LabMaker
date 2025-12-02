@@ -1,76 +1,99 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+<!doctype html>
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Início | LabMaker</title>
-  <style>
-    body { font-family: Arial, sans-serif; background: #fafafa; margin: 0; padding: 2rem; }
-    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    button { background: #007bff; color: white; border: none; padding: 10px 16px; border-radius: 5px; cursor: pointer; }
-    button:hover { background: #0056b3; }
-    table { border-collapse: collapse; width: 100%; background: white; border-radius: 8px; overflow: hidden; }
-    th, td { padding: 12px; border-bottom: 1px solid #ddd; text-align: left; }
-    th { background: #f0f0f0; }
-    tr:hover { background: #f9f9f9; }
-    .prioridade-0 { color: gray; }
-    .prioridade-1 { color: orange; }
-    .prioridade-2 { color: red; font-weight: bold; }
-  </style>
+    <meta charset="utf-8">
+    <title>Home - LabMaker</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="css/labmaker.css">
 </head>
+
 <body>
-  <header>
-    <h1>Requisições de Impressão 3D</h1>
-    <button onclick="window.location.href='/nova-requisicao'">Nova Requisição</button>
-  </header>
 
-  <table id="tabela">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Usuário</th>
-        <th>Material</th>
-        <th>Filamento (g)</th>
-        <th>Tempo (min)</th>
-        <th>Preço</th>
-        <th>Status</th>
-        <th>Prioridade</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+<header class="topbar">
+    <div class="brand-row">
+        <div class="logo-square">IF</div>
+        <div>
+            <h1>LabMaker</h1>
+            <p class="muted">Bem-vindo ao sistema de filas</p>
+        </div>
+    </div>
 
-  <script>
-    async function carregarRequisicoes() {
-      try {
-        const res = await fetch("/requisicoes");
-        if (!res.ok) throw new Error("Erro ao buscar requisições");
-        const dados = await res.json();
+    <div class="right-actions">
+        <a href="perfil" class="btn-ghost">Meu Perfil</a>
+        <button id="logoutBtn" class="btn-ghost red">Sair</button>
+    </div>
+</header>
 
-        const tbody = document.querySelector("#tabela tbody");
-        tbody.innerHTML = "";
+<main class="container">
 
-        dados.forEach(r => {
-          const tr = document.createElement("tr");
-          const prioridadeNome = ["Baixa", "Média", "Alta"][r.prioridade ?? 0];
-          tr.innerHTML = `
-            <td>${r.id}</td>
-            <td>${r.usuario.nome} (${r.usuario.tipo})</td>
-            <td>${r.tipoMaterial}</td>
-            <td>${r.qntdFilamento}</td>
-            <td>${r.tempoEstimado}</td>
-            <td>${r.precoEstimado?.toFixed(2) ?? '-'}</td>
-            <td>${r.status}</td>
-            <td class="prioridade-${r.prioridade}">${prioridadeNome}</td>
-          `;
-          tbody.appendChild(tr);
-        });
-      } catch (err) {
-        console.error(err);
-        alert("Erro ao carregar requisições!");
-      }
+    <section class="welcome-box card">
+        <h2>Bem-vindo(a), <span id="userName"></span>! 👋</h2>
+        <p class="muted">
+            Este é o sistema oficial de gestão de filas de impressão 3D do  
+            <b>LabMaker - IFFar Campus São Vicente do Sul</b>.
+        </p>
+
+        <div class="logo-stack big">
+            <div class="sq coral"></div>
+            <div class="sq green"></div>
+            <div class="sq blue"></div>
+        </div>
+
+        <p style="margin-top:10px">
+            Aqui você pode criar solicitações de impressão, acompanhar o andamento,
+            conferir sua posição na fila e ver o histórico.
+        </p>
+    </section>
+
+    <section class="card actions-grid">
+
+        <a href="new" class="action-button">
+            <div class="icon-box coral"></div>
+            <span>Nova Requisição</span>
+        </a>
+
+        <a href="perfil" class="action-button">
+            <div class="icon-box blue"></div>
+            <span>Minhas Impressões</span>
+        </a>
+
+        <a id="adminRequisicoes" href="lista-req" class="action-button hidden">
+            <div class="icon-box green"></div>
+            <span>Requisições (ADM)</span>
+        </a>
+
+        <a id="adminUsuarios" href="lista-usr" class="action-button hidden">
+            <div class="icon-box coral"></div>
+            <span>Usuários (ADM)</span>
+        </a>
+
+    </section>
+
+</main>
+
+<script src="js/utils.js"></script>
+<script src="js/api.js"></script>
+
+<script>
+    // Inicialização da Home
+    const user = utils.getCurrentUser();
+
+    if (!user) {
+        location.href = "login";
     }
 
-    carregarRequisicoes();
-  </script>
+    document.getElementById("userName").textContent = user.nome;
+
+    if (user.tipo === "ADMIN") {
+        document.getElementById("adminRequisicoes").classList.remove("hidden");
+        document.getElementById("adminUsuarios").classList.remove("hidden");
+    }
+
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+        utils.logout();
+        location.href = "login";
+    });
+</script>
+
 </body>
 </html>

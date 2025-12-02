@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8">
+    <title>Usuários - Admin | LabMaker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/labmaker.css">
+</head>
+
+<body>
+
+<header class="topbar">
+    <div class="brand-row">
+        <div class="logo-square">IF</div>
+        <div>
+            <h1>Usuários</h1>
+            <p class="muted">Gerenciamento de contas – Administrador</p>
+        </div>
+    </div>
+
+    <div class="right-actions">
+        <a href="home" class="btn-ghost">Home</a>
+        <button id="logoutBtn" class="btn-ghost red">Sair</button>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="card">
+        <h2>Lista de Usuários</h2>
+        <p class="muted">Contas registradas no sistema</p>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Tipo</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+
+            <tbody id="tabela-usuarios">
+                <!-- carregado via JS -->
+            </tbody>
+        </table>
+    </section>
+
+</main>
+
+<script src="js/utils.js"></script>
+<script src="js/api.js"></script>
+
+<script>
+
+    // Checar ADMIN
+    const user = utils.getCurrentUser();
+    if (!user) location.href = "login";
+    if (user.tipo !== "ADMIN") {
+        alert("Acesso negado.");
+        location.href = "home";
+    }
+
+    // Logout
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+        utils.logout();
+        location.href = "login";
+    });
+
+    // Carregar lista de usuários
+    async function carregarUsuarios() {
+        try {
+            const lista = await api.listarUsuarios();
+            const tbody = document.getElementById("tabela-usuarios");
+            tbody.innerHTML = "";
+
+            lista.forEach(u => {
+                const tr = document.createElement("tr");
+
+                tr.innerHTML = `
+                    <td>${u.id}</td>
+                    <td>${u.nome}</td>
+                    <td>${u.email}</td>
+                    <td>${u.tipo}</td>
+
+                    <td>
+                        <button class="btn-small blue" onclick="editar(${u.id})">Editar</button>
+                        <button class="btn-small red" onclick="deletar(${u.id})">Excluir</button>
+                    </td>
+                `;
+
+                tbody.appendChild(tr);
+            });
+
+        } catch (err) {
+            console.error(err);
+            alert("Erro ao carregar usuários.");
+        }
+    }
+
+    carregarUsuarios();
+
+    // Temporário — faço o modal se tu quiser
+    function editar(id) {
+        alert("Tela/modal de edição ainda não criada.\nSe quiser eu faço agora.");
+    }
+
+    async function deletar(id) {
+        if (!confirm("Deseja deletar este usuário?")) return;
+
+        try {
+            await api.deletarUsuario(id);
+            carregarUsuarios();
+        } catch (err) {
+            alert("Erro ao excluir usuário.");
+        }
+    }
+
+</script>
+
+</body>
+</html>

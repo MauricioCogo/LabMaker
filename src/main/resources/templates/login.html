@@ -1,77 +1,68 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+<!doctype html>
+<html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Login | LabMaker</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            background: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        form {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
-        }
-
-        input,
-        button {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-
-        button {
-            background: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-    </style>
+    <meta charset="utf-8">
+    <title>Login - LabMaker</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="css/labmaker.css">
 </head>
 
-<body>
-    <form id="loginForm">
-        <h2>Entrar</h2>
-        <input type="email" name="email" placeholder="E-mail" required>
-        <input type="password" name="senha" placeholder="Senha" required>
-        <button type="submit">Login</button>
-        <p><a href="/cadastro">Criar conta</a></p>
-    </form>
+<body class="center-page">
+
+    <div class="login-card">
+
+        <div class="logo-stack">
+            <div class="sq coral"></div>
+            <div class="sq green"></div>
+            <div class="sq blue"></div>
+        </div>
+
+        <h1>LabMaker</h1>
+        <p class="muted">Acesse sua conta</p>
+
+        <form id="loginForm">
+
+            <label>Email</label>
+            <input type="email" id="email" required>
+
+            <label>Senha</label>
+            <input type="password" id="senha" required>
+
+            <button type="submit" class="btn-primary">Entrar</button>
+        </form>
+
+        <p class="small-link">
+            Ainda não tem conta?
+            <a href="cadastro">Cadastrar</a>
+        </p>
+
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
 
     <script>
-        document.getElementById("loginForm").addEventListener("submit", async e => {
+        document.getElementById("loginForm").addEventListener("submit", async (e) => {
             e.preventDefault();
-            const data = {
-                email: e.target.email.value,
-                senha: e.target.senha.value
-            };
-            const res = await fetch("usuarios/auth", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data)
-            });
 
-            console.log(res.body);
-            
+            const email = document.getElementById("email").value;
+            const senha = document.getElementById("senha").value;
 
-            if (res.ok) {
-                window.location.href = "/";
-            } else {
-                alert("Falha no login. Verifique suas credenciais.");
+            try {
+                const user = await api.login({ email, senha });
+                console.log(user);
+
+                utils.saveUser(user);
+
+                alert("Login realizado com sucesso!");
+                location.href = "/";
+            } catch (err) {
+                alert("Credenciais inválidas.");
             }
         });
     </script>
+
 </body>
 
 </html>

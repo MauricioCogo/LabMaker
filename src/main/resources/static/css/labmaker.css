@@ -1,0 +1,178 @@
+/* ====== RESET ====== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+}
+
+body {
+    background: #f5f6f8;
+    color: #222;
+}
+
+/* ====== TOPBAR ====== */
+.topbar {
+    width: 100%;
+    background: #ffffff;
+    border-bottom: 1px solid #ddd;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.logo-square {
+    width: 42px;
+    height: 42px;
+    background: #2ecc71;
+    color: #fff;
+    font-weight: 700;
+    font-size: 20px;
+    display: grid;
+    place-items: center;
+    border-radius: 8px;
+}
+
+.muted {
+    font-size: 14px;
+    color: #666;
+}
+
+.right-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* ====== BUTTONS ====== */
+button,
+.btn-primary,
+.btn-ghost,
+.btn-small {
+    cursor: pointer;
+    border: none;
+    padding: 10px 16px;
+    font-size: 15px;
+    border-radius: 6px;
+    transition: .2s;
+}
+
+.btn-primary {
+    background: #2ecc71;
+    color: white;
+}
+.btn-primary:hover {
+    background: #28b864;
+}
+
+.btn-ghost {
+    background: transparent;
+    border: 1px solid #bbb;
+}
+.btn-ghost:hover {
+    background: #eee;
+}
+
+.btn-ghost.red {
+    border-color: #e74c3c;
+    color: #e74c3c;
+}
+.btn-ghost.red:hover {
+    background: #ffe5e5;
+}
+
+.btn-small {
+    padding: 6px 10px;
+    font-size: 14px;
+}
+
+.btn-small.blue {
+    background: #3498db;
+    color: white;
+}
+.btn-small.red {
+    background: #e74c3c;
+    color: white;
+}
+
+/* ====== CONTAINER ====== */
+.container {
+    max-width: 900px;
+    margin: 32px auto;
+    padding: 0 20px;
+}
+
+/* ====== CARD ====== */
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0px 2px 6px #00000010;
+    margin-bottom: 20px;
+}
+
+.card h2 {
+    margin-bottom: 6px;
+}
+
+/* ====== FORM ====== */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 20px;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+/* ====== TABLE ====== */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.table thead {
+    background: #e9ecef;
+}
+
+.table th,
+.table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+.table tr:hover {
+    background: #f4f4f4;
+}
+
+/* ====== HOME WELCOME BOX ====== */
+.welcome-box {
+    background: white;
+    padding: 30px;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px #0001;
+}
+
+.welcome-box h2 {
+    font-size: 22px;
+}
+
+.welcome-box p {
+    margin-top: 10px;
+    font-size: 15px;
+}
+

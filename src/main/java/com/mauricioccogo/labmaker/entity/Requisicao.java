@@ -19,13 +19,19 @@ public class Requisicao {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    @Column
+    @Column(nullable = false)
+    private String url;
+
+    @Column(nullable = false)
+    private String descricao;
+
+    @Column(nullable = true)
     private Double quantidadeFilamento;
     
-    @Column
+    @Column(nullable = true)
     private Integer tempoEstimado;
     
-    @Column
+    @Column(nullable = true)
     private Double precoEstimado;
     
     @Column
@@ -33,18 +39,18 @@ public class Requisicao {
 
     @Enumerated(EnumType.STRING)
     @Column
-    private Status status = Status.PENDENTE;
+    private Status status = Status.AGUARDANDO_APROVACAO;
 
     @Column
     private LocalDateTime dataSolicitacao = LocalDateTime.now();
 
-    @Column(nullable = true)
-    private LocalDateTime dataPrevista;
-
     @Column
     private Integer prioridade = 0;
 
+    @Column
+    private int posicao;
+
     public enum Status {
-        PENDENTE, EM_IMPRESSAO, CONCLUIDA, CANCELADA
+        PENDENTE, EM_IMPRESSAO, CONCLUIDA, CANCELADA, AGUARDANDO_APROVACAO
     }
 }
